@@ -127,7 +127,10 @@
     let list = document.querySelector('.weibo-list');
 
     // 声明一个空数组来装对象,
-    let WbArr = []
+    //let WbArr[]; 现在不能直接给一个空数组了，因为有可能已经有数据了，直接用空数组，添加新数据覆盖，会把旧的数据直接去掉了
+    let WbArr;
+
+
 
 
 
@@ -166,8 +169,8 @@
             content: content,
             time: time,
         }
-            // 把对象放到数组里
-            WbArr.push(obj);
+        // 把对象放到数组里
+        WbArr.push(obj);
 
         // 储存数据开始
         // 因为本地数据的数据类型只有字符串和数字，所以需要转换以下
@@ -176,9 +179,59 @@
         // 储存到本地数据里
         localStorage.setItem('WbData', JsonStr);
         // console.log(localStorage);
-        console.log(JSON.stringify);
+        // console.log(JSON.stringify);
 
     };
+
+
+
+
+
+
+    /* 第三个功能, 读取本地数据，生成li
+     1.先读取数据
+     2.先把读取出来的内容，转换为js里面的对象
+     3.遍历数组，生成多个li*/
+
+    // 读取数据后，最好转换成数组方便操作
+    // 读取数据
+    let Jsonstr = localStorage.getItem('WbData');
+    // console.log(Jsonstr);
+    // 转换成数组
+    // let arr = JSON.parse(Jsonstr);
+    // console.log(arr);
+
+    // 判断，如果之前有数据，就读取，没有数据就是null
+    if (Jsonstr === null) {
+        WbArr = [];
+    } else {
+        WbArr = JSON.parse(Jsonstr);
+    }
+
+    // 生成li结构
+    let html = '';
+    for (let i = WbArr.length -1; i>= 0; i--) {
+        html += '<li>'+
+            '<p class="content"> '+ WbArr[i].content +'</p> '+
+            '<span class="del">删除</span>'+
+           ' <span class="time">'+ WbArr[i].time +'</span>'+
+        '</li>'
+    }
+
+    list.innerHTML = html
+
+
+
+
+    // 再次重复上面的操作，生成li结构，然后添加到页面上
+    // for (let i = 0; i < arr.length - 1; i++) {
+    //     html += <p class="content">快来收了这九款用上就停不下来的应用吧！！</p>
+    //         <span class="del">删除</span>
+    //         <span class="time">2019</span>
+    //     }
+
+
+
 
 
 
