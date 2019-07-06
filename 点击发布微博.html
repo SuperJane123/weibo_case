@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>微博发布效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .weibo {
+            width: 600px;
+            border: 1px solid #ccc;
+
+            margin: 100px auto;
+            padding: 10px;
+
+        }
+
+        .weibo-text {
+            width: 590px;
+            height: 140px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            resize: none;
+        }
+
+        .weibo-text:focus {
+            border-color: #f60;
+        }
+
+        .weibo-btn {
+            width: 80px;
+            height: 30px;
+            background-color: #f90;
+            color: #fff;
+            border: 0 none;
+            margin-top: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            outline: 0 none;
+        }
+
+        .weibo-list {
+            padding-top: 10px;
+        }
+
+        .weibo-list li {
+            font-size: 14px;
+            line-height: 30px;
+            border-bottom: 1px dotted #ccc;
+            overflow: hidden;
+        }
+
+        .weibo-list li p {
+            float: left;
+        }
+
+        .weibo-list li span {
+            float: right;
+            cursor: pointer;
+        }
+
+        .weibo-list li input {
+            height: 24px;
+            line-height: 24px;
+            width: 300px;
+            font-size: 14px;
+            border: 0 none;
+        }
+
+        .time {
+            margin-right: 10px;
+            font-style: normal;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="weibo">
+        <textarea class="weibo-text"></textarea>
+        <input class="weibo-btn" value="发布" type="button">
+        <ul class="weibo-list">
+            <!-- <li>
+            <p class="content">快来收了这九款用上就停不下来的应用吧！！</p> 
+            <span class="del">删除</span>
+            <span class="time">2019</span>
+        </li> -->
+        </ul>
+    </div>
+</body>
+<script src="./kits.js"></script>
+<script>
+    /*
+      效果分为4个
+        —— 把一个案例拆分称为多个小的功能，每个功能一点一点的完成，就把大的项目完成了
+        1. 在一开始加载页面的时候，会读取本地数据，根据本地数据生成li
+        2. 点击发布
+        3. ctrl + 回车发布
+        4. 点击删除
+    */
+
+    // 因为如果不点击发布，是没有本地数据的，所以先作点击发布
+    // 点击发布功能 
+    //    会在页面上看到一个新的li，在本地数据里面，多一条数据
+    /* 
+      步骤：
+        1.获取按钮
+        2.注册点击事件
+        3.新建li，添加到ul里面
+        4.把数据存储到本地存储里面
+    */
+
+    // 获取文本域元素
+    let text = document.querySelector('.weibo-text');
+    // console.log(text)
+    // 获取发布按钮元素
+    let btn = document.querySelector('.weibo-btn');
+    // console.log(btn);
+
+    // 获取ul元素
+    let list = document.querySelector('.weibo-list');
+
+
+
+
+
+
+    // 第一个功能，点击按钮能发布内容
+
+    // 给发布按钮注册点击事件
+    btn.onclick = function () {
+        // 获取文本域内容
+        let content = text.value;
+        // 获取时间变量
+        let time = kits.formatDate();
+        // 获取内容后，生成li结构,防止内容被覆盖，使用document来创建
+        let li = document.createElement('li');//记得要用单引号包起来；
+        // 内容是包含在li里面的结构里的，所以要在li里面再创两个结构
+        li.innerHTML = '<p class="content">' + content + '</p> ' +
+                        '<span class="del">删除</span>' +
+                     '<span class="time">' + time + '</span>';
+        // 因为document创建的结构，需要手动添加到父元素里,需求：生成的每个内容都插到第一行
+        list.insertBefore(li,list.children[0]);
+        // 清空文本域内容
+        text.value = '';
+
+    };
+</script>
+
+</html>
