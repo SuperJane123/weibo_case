@@ -126,6 +126,10 @@
     // 获取ul元素
     let list = document.querySelector('.weibo-list');
 
+    // 声明一个空数组来装对象,
+    let WbArr = []
+
+
 
 
 
@@ -143,14 +147,46 @@
         let li = document.createElement('li');//记得要用单引号包起来；
         // 内容是包含在li里面的结构里的，所以要在li里面再创两个结构
         li.innerHTML = '<p class="content">' + content + '</p> ' +
-                        '<span class="del">删除</span>' +
-                     '<span class="time">' + time + '</span>';
+            '<span class="del">删除</span>' +
+            '<span class="time">' + time + '</span>';
         // 因为document创建的结构，需要手动添加到父元素里,需求：生成的每个内容都插到第一行
-        list.insertBefore(li,list.children[0]);
+        list.insertBefore(li, list.children[0]);
         // 清空文本域内容
         text.value = '';
 
+
+
+
+
+        // 第二个功能，储存发布的内容到本地数据
+        //把需要储存的数据，以对象的形式存储，因为数据量大，把对象用数组装起来再存到数据里，比较方便管理
+
+        // 需要储存的内容
+        let obj = {
+            content: content,
+            time: time,
+        }
+            // 把对象放到数组里
+            WbArr.push(obj);
+
+        // 储存数据开始
+        // 因为本地数据的数据类型只有字符串和数字，所以需要转换以下
+        let JsonStr = JSON.stringify(WbArr);
+        // console.log(JsonStr);
+        // 储存到本地数据里
+        localStorage.setItem('WbData', JsonStr);
+        // console.log(localStorage);
+        console.log(JSON.stringify);
+
     };
+
+
+
+
+
+
+
+
 </script>
 
 </html>
