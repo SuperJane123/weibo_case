@@ -166,6 +166,8 @@
 
         // 需要储存的内容
         let obj = {
+            // 创建唯一id号
+            id: kits.primaryKey(),
             content: content,
             time: time,
         }
@@ -210,25 +212,58 @@
 
     // 生成li结构
     let html = '';
-    for (let i = WbArr.length -1; i>= 0; i--) {
-        html += '<li>'+
-            '<p class="content"> '+ WbArr[i].content +'</p> '+
-            '<span class="del">删除</span>'+
-           ' <span class="time">'+ WbArr[i].time +'</span>'+
-        '</li>'
+    for (let i = WbArr.length - 1; i >= 0; i--) {
+        html += '<li>' +
+            '<p class="content"> ' + WbArr[i].content + '</p> ' +
+            '<span class="del" data-id = "' + WbArr[i].id + '">删除</span>' +
+            ' <span class="time">' + WbArr[i].time + '</span>' +
+            '</li>'
+            // console.log(WbArr[i].id)
     }
+   
+    // 把内容添加到页面结构里
+    list.innerHTML = html;
 
-    list.innerHTML = html
+
+    // 第四个功能，点击删除把内容从本地数据里删除
+    // 动态生成的元素，最好使用事件委托来做
+    // 获取元素
+    let ul = document.querySelector('.weibo-list');
+   
+    // 注册点击事件
+    ul.onclick = function (e) {
+        console.log(e.target);
+        // 使用事件对象来捕捉事件目标
+        if (e.target.className === 'del') {
+            // 移除整行li
+            // console.log(e.target.parentNode)
+            ul.removeChild(e.target.parentNode);
+        };
+        
+        // 首先需要把本地数据取出来
+         let JsonStr = localStorage.getItem('WbData');
+         console.log(JsonStr)
+        // // 再把数据字符串格式改为数组
+         let arr = JSON.parse(JsonStr);
+         console.log(arr);
+        // // 也要把本地数据里面的内容来删除，最好的方法是给每个删除的盒子自定义id属性
+         let id = e.target.dataset.id
+         console.log(id)
+         arr.forEach((e,i) => {
+             if(e.id ===id){
+                 arr.splice(i,1);
+             };
+         });
+        // // 再把数据转为字符串格式，更新到本地数组里
+         JsonStr = JSON.stringify(arr);
+         localStorage.setItem('WbData',JsonStr);
+         console.log (JsonStr)
+    }
+    
 
 
 
 
-    // 再次重复上面的操作，生成li结构，然后添加到页面上
-    // for (let i = 0; i < arr.length - 1; i++) {
-    //     html += <p class="content">快来收了这九款用上就停不下来的应用吧！！</p>
-    //         <span class="del">删除</span>
-    //         <span class="time">2019</span>
-    //     }
 
 
 
